@@ -7,18 +7,26 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
+import React, { useState } from "react";
 
 import Home from "./home/pages/Home";
 import Carrito from "./carrito/pages/Carrito";
 import Header from "./shared/Header";
 
 function App() {
+  const [logged, setLogged] = useState(false);
+  const [carrito, setCarrito] = useState([]);
+
   return (
     <Router>
-      <Header />
+      <Header
+        isLoggedIn={logged}
+        login={setLogged}
+        cantCarrito={carrito.length}
+      />
       <Switch>
         <Route path="/" exact>
-          <Home />
+          <Home isLoggedIn={logged} carrito={carrito} setCarrito={setCarrito} />
         </Route>
         <Route path="/Carrito" exact>
           <Carrito />
