@@ -32,7 +32,7 @@ function App() {
           <Home isLoggedIn={logged} carrito={carrito} setCarrito={setCarrito} />
         </Route>
         <Route path="/Carrito" exact>
-          <Carrito carrito={carrito} />
+          <Carrito carrito={carrito} setCarrito={setCarrito} />
         </Route>
         <Redirect to="/" />
       </Switch>
