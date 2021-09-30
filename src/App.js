@@ -22,14 +22,17 @@ function App() {
       <Header
         isLoggedIn={logged}
         login={setLogged}
-        cantCarrito={carrito.length}
+        cantCarrito={carrito.reduce(
+          (total, producto) => total + producto.cantidad,
+          0
+        )}
       />
       <Switch>
         <Route path="/" exact>
           <Home isLoggedIn={logged} carrito={carrito} setCarrito={setCarrito} />
         </Route>
         <Route path="/Carrito" exact>
-          <Carrito />
+          <Carrito carrito={carrito} />
         </Route>
         <Redirect to="/" />
       </Switch>
