@@ -1,17 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { Container, Row, Col } from "react-bootstrap";
+import api from "../../api";
 
 const CrearProducto = ({ productos, setProductos }) => {
-  const categorias = [
-    { id: 1, nombre: "Calzado" },
-    { id: 2, nombre: "Accesorios" },
-    { id: 3, nombre: "Wearables" },
-  ];
+  const [categorias, setCategorias] = useState([]);
 
   const [newProduct, setNewProduct] = useState({
-    id: productos[productos.length - 1].id + 1,
     title: "",
     description: "",
     price: 0,
@@ -19,6 +15,15 @@ const CrearProducto = ({ productos, setProductos }) => {
     categoria: "",
     disponible: false,
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await api.categorias.list();
+      setCategorias(response);
+    };
+
+    fetchData();
+  }, []);
 
   const handleChange = (event) => {
     setNewProduct({ ...newProduct, [event.target.name]: event.target.value });
@@ -82,7 +87,7 @@ const CrearProducto = ({ productos, setProductos }) => {
                 >
                   <option>Seleccione una categoria</option>
                   {categorias.map((categoria) => (
-                    <option key={categoria.id} value={categoria.nombre}>
+                    <option key={categoria._id} value={categoria.nombre}>
                       {categoria.nombre}
                     </option>
                   ))}
@@ -114,7 +119,6 @@ const CrearProducto = ({ productos, setProductos }) => {
           </Col>
         </Row>
       </Container>
-      <div>{productos.toString()}</div>
     </React.Fragment>
   );
 };

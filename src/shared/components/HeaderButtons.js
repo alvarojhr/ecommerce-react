@@ -8,10 +8,12 @@ import { Link } from "react-router-dom";
 const HeaderButtons = ({ isLoggedIn, setLogin, cantCarrito }) => {
   const login = () => {
     setLogin(true);
+    localStorage.setItem("isLogged", true);
   };
 
   const logout = () => {
     setLogin(false);
+    localStorage.setItem("isLogged", false);
   };
 
   if (isLoggedIn) {
@@ -19,7 +21,7 @@ const HeaderButtons = ({ isLoggedIn, setLogin, cantCarrito }) => {
       <React.Fragment>
         <Link to="/CrearProducto">
           <Button variant="primary" className="me-3">
-            Crear producto 
+            Crear producto
           </Button>
         </Link>
 

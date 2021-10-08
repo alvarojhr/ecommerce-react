@@ -10,3 +10,9 @@ exports.CreateCategoria = (request, response) => {
     response.status(201).json(categoriaCreated);
   });
 };
+
+exports.GetAll = (req, res) => {
+  Categoria.find().then((categorias) => {
+    res.status(200).json(categorias);
+  });
+};

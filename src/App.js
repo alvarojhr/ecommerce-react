@@ -13,7 +13,7 @@ import Home from "./home/pages/Home";
 import Carrito from "./carrito/pages/Carrito";
 import Header from "./shared/Header";
 import CrearProducto from "./productos/pages/CrearProducto";
-import CallApi from "./api";
+import api from "./api";
 import { useEffect } from "react";
 
 function App() {
@@ -23,11 +23,22 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await CallApi();
+      const response = await api.products.list();
       setProductos(response);
     };
 
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    const isLogged = localStorage.getItem("isLogged");
+
+    if (isLogged === null) {
+      localStorage.setItem("isLogged", false);
+      setLogged(false);
+    } else {
+      setLogged(isLogged === "true");
+    }
   }, []);
 
   return (
