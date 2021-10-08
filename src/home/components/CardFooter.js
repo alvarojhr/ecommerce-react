@@ -46,7 +46,7 @@ const CardFooter = ({
   } else {
     return (
       <Badge pill bg="secondary">
-        {categoria}
+        {categoria.nombre}
       </Badge>
     );
   }

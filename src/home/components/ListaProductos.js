@@ -6,7 +6,7 @@ const ListaProductos = ({ isLoggedIn, carrito, setCarrito, productos }) => {
     <Container>
       <Row>
         {productos.map((producto) => (
-          <Col xs={4} key={producto.id}>
+          <Col xs={4} key={producto._id}>
             <Producto
               producto={producto}
               isLoggedIn={isLoggedIn}
