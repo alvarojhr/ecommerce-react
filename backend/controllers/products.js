@@ -1,9 +1,11 @@
 const Producto = require("../models/producto");
 
 exports.getProducts = (req, res) => {
-  Producto.find().then((productoResult) => {
-    res.status(200).json(productoResult);
-  });
+  Producto.find()
+    .populate("categoria")
+    .then((productoResult) => {
+      res.status(200).json(productoResult);
+    });
 };
 
 exports.addProduct = (req, res) => {
@@ -30,6 +32,18 @@ exports.getProductId = (req, res) => {
       res.status(404).json("Producto no encontrado");
     }
   });
+};
+
+exports.getProductIdLazyLoading = (req, res) => {
+  Producto.findById(req.params.id)
+    .populate("categoria")
+    .then((productoResult) => {
+      if (productoResult) {
+        res.status(200).json(productoResult);
+      } else {
+        res.status(404).json("Producto no encontrado");
+      }
+    });
 };
 
 exports.getProductoDisponible = (req, res) => {

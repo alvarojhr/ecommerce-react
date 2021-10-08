@@ -5,7 +5,11 @@ const producto = mongoose.Schema({
   description: { type: String },
   price: { type: Number, required: true },
   url: { type: String, required: true },
-  categoria: { type: String, required: true },
+  categoria: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Categoria",
+    required: true,
+  },
   disponible: { type: Boolean, required: true },
 });
 
