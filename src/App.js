@@ -13,6 +13,7 @@ import Home from "./home/pages/Home";
 import Carrito from "./carrito/pages/Carrito";
 import Header from "./shared/Header";
 import CrearProducto from "./productos/pages/CrearProducto";
+import Gestion from "./productos/pages/Gestion";
 import api from "./api";
 import { useEffect } from "react";
 
@@ -63,8 +64,11 @@ function App() {
         <Route path="/Carrito" exact>
           <Carrito carrito={carrito} setCarrito={setCarrito} />
         </Route>
-        <Route path="/CrearProducto">
+        <Route path="/CrearProducto" exact>
           <CrearProducto productos={productos} setProductos={setProductos} />
+        </Route>
+        <Route path="/Gestion" exact>
+          <Gestion productos={productos} />
         </Route>
         <Redirect to="/" />
       </Switch>

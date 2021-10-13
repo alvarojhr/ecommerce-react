@@ -18,10 +18,14 @@ exports.addProduct = (req, res) => {
     disponible: req.body.disponible,
   });
 
-  productoAdd.save().then((createdProduct) => {
-    console.log(createdProduct);
-    res.status(201).json("Creado satisfactoriamente");
-  });
+  productoAdd
+    .save()
+    .then((createdProduct) => {
+      res.status(201).json("Creado satisfactoriamente");
+    })
+    .catch((error) => {
+      res.status(500).json({ err: error });
+    });
 };
 
 exports.getProductId = (req, res) => {

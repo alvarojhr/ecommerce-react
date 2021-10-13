@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Alert } from "react-bootstrap";
 import api from "../../api";
+import { useHistory } from "react-router-dom";
 
 const CrearProducto = ({ productos, setProductos }) => {
+  const history = useHistory();
   const [categorias, setCategorias] = useState([]);
+  const [error, setError] = useState();
+  const [success, setSuccess] = useState();
 
   const [newProduct, setNewProduct] = useState({
     title: "",
@@ -27,11 +31,18 @@ const CrearProducto = ({ productos, setProductos }) => {
 
   const handleChange = (event) => {
     setNewProduct({ ...newProduct, [event.target.name]: event.target.value });
-    console.log(newProduct);
   };
 
-  const handleClick = () => {
-    setProductos([...productos, newProduct]);
+  const handleClick = async () => {
+    const apiResponse = await api.products.create(newProduct);
+    if (apiResponse.err) {
+      setError(apiResponse.err.message);
+      console.log(apiResponse.err);
+    } else {
+      setSuccess(apiResponse);
+      setProductos([...productos, newProduct]);
+      //history.push("/");
+    }
   };
 
   return (
@@ -40,12 +51,14 @@ const CrearProducto = ({ productos, setProductos }) => {
       <Container>
         <Row className="d-flex justify-content-center align-items-center">
           <Col xs={6}>
+            {error && <Alert variant="danger">{error}</Alert>}
+            {success && <Alert variant="success">{success}</Alert>}
             <Form>
               <Form.Group className="mb-3">
                 <Form.Label>Nombre</Form.Label>
                 <Form.Control
                   type="text"
-                  name="nombre"
+                  name="title"
                   onChange={handleChange}
                 />
               </Form.Group>
@@ -54,7 +67,7 @@ const CrearProducto = ({ productos, setProductos }) => {
                 <Form.Label>Descripción</Form.Label>
                 <Form.Control
                   as="textarea"
-                  name="descripcion"
+                  name="description"
                   style={{ height: "50px" }}
                   onChange={handleChange}
                 />
@@ -64,18 +77,14 @@ const CrearProducto = ({ productos, setProductos }) => {
                 <Form.Label>Precio</Form.Label>
                 <Form.Control
                   type="number"
-                  name="precio"
+                  name="price"
                   onChange={handleChange}
                 />
               </Form.Group>
 
               <Form.Group className="mb-3">
                 <Form.Label>URL Imagen</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="imagen"
-                  onChange={handleChange}
-                />
+                <Form.Control type="text" name="url" onChange={handleChange} />
               </Form.Group>
 
               <Form.Group className="mb-3">
@@ -87,7 +96,7 @@ const CrearProducto = ({ productos, setProductos }) => {
                 >
                   <option>Seleccione una categoria</option>
                   {categorias.map((categoria) => (
-                    <option key={categoria._id} value={categoria.nombre}>
+                    <option key={categoria._id} value={categoria._id}>
                       {categoria.nombre}
                     </option>
                   ))}
@@ -100,6 +109,7 @@ const CrearProducto = ({ productos, setProductos }) => {
                   id="default-checkbox"
                   label="Disponible"
                   name="disponible"
+                  value="true"
                   onChange={handleChange}
                 />
               </Form.Group>
