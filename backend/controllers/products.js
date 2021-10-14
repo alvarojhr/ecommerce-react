@@ -55,3 +55,30 @@ exports.getProductoDisponible = (req, res) => {
     res.status(200).json(productoResult);
   });
 };
+
+exports.deleteProduct = (req, res) => {
+  const id = req.params.id;
+
+  Producto.deleteOne({ _id: id }).then((productoResult) => {
+    res.status(200).json("El producto se eliminó satisfactoriamente.");
+  });
+};
+
+exports.editProduct = (req, res) => {
+  const id = req.params.id;
+
+  const productoUpd = new Producto({
+    _id: id,
+    title: req.body.title,
+    description: req.body.description,
+    price: req.body.price,
+    url: req.body.url,
+    categoria: req.body.categoria,
+    disponible: req.body.disponible,
+  });
+  console.log(productoUpd);
+
+  Producto.findByIdAndUpdate(id, productoUpd).then((productoResult) => {
+    res.status(200).json("El producto se actualizó satisfactoriamente");
+  });
+};

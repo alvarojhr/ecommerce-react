@@ -20,6 +20,20 @@ const api = {
         body: JSON.stringify(producto),
       });
     },
+    delete(id) {
+      return callApi(`/products/${id}`, {
+        method: "DELETE",
+      });
+    },
+    edit(producto) {
+      return callApi(`/products/${producto._id}`, {
+        method: "PUT",
+        body: JSON.stringify(producto),
+      });
+    },
+    getProduct(id) {
+      return callApi(`/products/${id}`);
+    },
   },
   categorias: {
     list() {
