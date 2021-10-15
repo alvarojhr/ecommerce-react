@@ -18,10 +18,14 @@ exports.addProduct = (req, res) => {
     disponible: req.body.disponible,
   });
 
-  productoAdd.save().then((createdProduct) => {
-    console.log(createdProduct);
-    res.status(201).json("Creado satisfactoriamente");
-  });
+  productoAdd
+    .save()
+    .then((createdProduct) => {
+      res.status(201).json("Creado satisfactoriamente");
+    })
+    .catch((error) => {
+      res.status(500).json({ err: error });
+    });
 };
 
 exports.getProductId = (req, res) => {
@@ -49,5 +53,32 @@ exports.getProductIdLazyLoading = (req, res) => {
 exports.getProductoDisponible = (req, res) => {
   Producto.find({ disponible: true }).then((productoResult) => {
     res.status(200).json(productoResult);
+  });
+};
+
+exports.deleteProduct = (req, res) => {
+  const id = req.params.id;
+
+  Producto.deleteOne({ _id: id }).then((productoResult) => {
+    res.status(200).json("El producto se eliminó satisfactoriamente.");
+  });
+};
+
+exports.editProduct = (req, res) => {
+  const id = req.params.id;
+
+  const productoUpd = new Producto({
+    _id: id,
+    title: req.body.title,
+    description: req.body.description,
+    price: req.body.price,
+    url: req.body.url,
+    categoria: req.body.categoria,
+    disponible: req.body.disponible,
+  });
+  console.log(productoUpd);
+
+  Producto.findByIdAndUpdate(id, productoUpd).then((productoResult) => {
+    res.status(200).json("El producto se actualizó satisfactoriamente");
   });
 };
