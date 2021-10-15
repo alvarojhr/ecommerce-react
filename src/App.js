@@ -33,13 +33,12 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const isLogged = localStorage.getItem("isLogged");
+    const token = localStorage.getItem("token");
 
-    if (isLogged === null) {
-      localStorage.setItem("isLogged", false);
+    if (token === null) {
       setLogged(false);
     } else {
-      setLogged(isLogged === "true");
+      setLogged(true);
     }
   }, []);
 

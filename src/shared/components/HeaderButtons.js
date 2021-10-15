@@ -1,19 +1,23 @@
 import React from "react";
-
 import Button from "react-bootstrap/Button";
 import Badge from "react-bootstrap/Badge";
-
+import GoogleLogin from "react-google-login";
 import { Link } from "react-router-dom";
 
 const HeaderButtons = ({ isLoggedIn, setLogin, cantCarrito }) => {
-  const login = () => {
+  const login = (res) => {
     setLogin(true);
-    localStorage.setItem("isLogged", true);
+    localStorage.setItem("token", res.tokenId);
+    console.log(res);
   };
 
   const logout = () => {
     setLogin(false);
-    localStorage.setItem("isLogged", false);
+    localStorage.removeItem("token");
+  };
+
+  const loginError = (err) => {
+    console.log(err);
   };
 
   if (isLoggedIn) {
@@ -44,9 +48,17 @@ const HeaderButtons = ({ isLoggedIn, setLogin, cantCarrito }) => {
   } else {
     return (
       <div>
-        <Button variant="light" onClick={login}>
+        <GoogleLogin
+          clientId="546633833310-dvb26llra8i3v63hjlrf9nhdbrshrmjo.apps.googleusercontent.com"
+          buttonText="Login"
+          onSuccess={login}
+          onFailure={loginError}
+          cookiePolicy={"single_host_origin"}
+        />
+        ,
+        {/* <Button variant="light" onClick={login}>
           Login
-        </Button>
+        </Button> */}
       </div>
     );
   }
