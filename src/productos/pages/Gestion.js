@@ -1,15 +1,20 @@
+import React, { useState } from "react";
 import { Container, Row, Col, Table, Button } from "react-bootstrap";
 import Busqueda from "../components/Busqueda";
 import { Link } from "react-router-dom";
 import api from "../../api";
 import "./Gestion.css";
 
-const Gestion = ({ productos, setProductos }) => {
+const Gestion = ({ productos }) => {
+  const [productosGestion, setProductosGestion] = useState([...productos]);
+
   const deleteProduct = (event) => {
     const id = event.target.id;
     api.products.delete(id);
-    const newProducts = productos.filter((product) => product._id !== id);
-    setProductos([...newProducts]);
+    const newProducts = productosGestion.filter(
+      (product) => product._id !== id
+    );
+    setProductosGestion([...newProducts]);
   };
 
   return (
@@ -18,7 +23,10 @@ const Gestion = ({ productos, setProductos }) => {
       <Container>
         <Row className="mb-3">
           <Col xs={4}>
-            <Busqueda productos={productos} setProductos={setProductos} />
+            <Busqueda
+              productos={productos}
+              setProductos={setProductosGestion}
+            />
           </Col>
         </Row>
         <Table striped bordered hover>
@@ -34,7 +42,7 @@ const Gestion = ({ productos, setProductos }) => {
             </tr>
           </thead>
           <tbody>
-            {productos.map((producto) => {
+            {productosGestion.map((producto) => {
               return (
                 <tr key={producto._id}>
                   <td>{producto.title}</td>
