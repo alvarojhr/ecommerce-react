@@ -68,7 +68,7 @@ const ProductForm = ({ handleChange, handleClick, categorias, formValue }) => {
           id="default-checkbox"
           label="Disponible"
           name="disponible"
-          value={formValue.title || "true"}
+          value={formValue.disponible || "true"}
           onChange={handleChange}
         />
       </Form.Group>

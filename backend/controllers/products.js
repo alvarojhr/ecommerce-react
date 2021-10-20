@@ -21,7 +21,15 @@ exports.addProduct = (req, res) => {
   productoAdd
     .save()
     .then((createdProduct) => {
-      res.status(201).json("Creado satisfactoriamente");
+      Producto.populate(createdProduct, "categoria").then(
+        (populatedProduct) => {
+          console.log(createdProduct);
+          res.status(201).json({
+            mensaje: "Creado satisfactoriamente",
+            producto: populatedProduct,
+          });
+        }
+      );
     })
     .catch((error) => {
       res.status(500).json({ err: error });
@@ -80,5 +88,12 @@ exports.editProduct = (req, res) => {
 
   Producto.findByIdAndUpdate(id, productoUpd).then((productoResult) => {
     res.status(200).json("El producto se actualizó satisfactoriamente");
+  });
+};
+
+exports.findProduct = (req, res) => {
+  const name = req.params.name;
+  Producto.find({ title: { $regex: ".*" + name + ".*" } }).then((products) => {
+    res.status(200).json(products);
   });
 };

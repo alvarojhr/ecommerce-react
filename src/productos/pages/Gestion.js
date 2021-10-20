@@ -1,4 +1,5 @@
-import { Container, Table, Button } from "react-bootstrap";
+import { Container, Row, Col, Table, Button } from "react-bootstrap";
+import Busqueda from "../components/Busqueda";
 import { Link } from "react-router-dom";
 import api from "../../api";
 import "./Gestion.css";
@@ -7,7 +8,6 @@ const Gestion = ({ productos, setProductos }) => {
   const deleteProduct = (event) => {
     const id = event.target.id;
     api.products.delete(id);
-    console.log(productos);
     const newProducts = productos.filter((product) => product._id !== id);
     setProductos([...newProducts]);
   };
@@ -16,6 +16,11 @@ const Gestion = ({ productos, setProductos }) => {
     <div>
       <h1 className="text-center mt-5 mb-5">Gestión de productos</h1>
       <Container>
+        <Row className="mb-3">
+          <Col xs={4}>
+            <Busqueda productos={productos} setProductos={setProductos} />
+          </Col>
+        </Row>
         <Table striped bordered hover>
           <thead>
             <tr>
