@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 const Carrito = ({ carrito, setCarrito }) => {
   const popProduct = (e) => {
     const productoEliminar = e.target.id;
-    const carritoSinProducto = carrito.filter((p) => p.id != productoEliminar);
+    const carritoSinProducto = carrito.filter((p) => p._id != productoEliminar);
     setCarrito([...carritoSinProducto]);
   };
 
@@ -27,8 +27,8 @@ const Carrito = ({ carrito, setCarrito }) => {
           <tbody>
             {carrito.map((producto) => {
               return (
-                <tr key={producto.id}>
-                  <td>{producto.id}</td>
+                <tr key={producto._id}>
+                  <td>{producto._id}</td>
                   <td>{producto.nombre}</td>
                   <td>{producto.cantidad}</td>
                   <td>{producto.precio}</td>
@@ -37,7 +37,7 @@ const Carrito = ({ carrito, setCarrito }) => {
                     <Button
                       variant="danger"
                       onClick={popProduct}
-                      id={producto.id}
+                      id={producto._id}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

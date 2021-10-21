@@ -11,9 +11,10 @@ const CardFooter = ({
   setCarrito,
 }) => {
   const AddProduct = (e) => {
-    const productoAgregar = productos.find((p) => p.id == e.target.id);
+    console.log(e.target);
+    const productoAgregar = productos.find((p) => p._id == e.target.id);
     console.log(typeof e.target.id);
-    const productoAgregado = carrito.find((p) => p.id === productoAgregar.id);
+    const productoAgregado = carrito.find((p) => p._id === productoAgregar._id);
 
     if (productoAgregado) {
       //Cuando ya está el producto en el carrito
@@ -23,9 +24,10 @@ const CardFooter = ({
       setCarrito([...carrito]);
     } else {
       //Cuando no se ha agregado el producto al carrito
+      console.log(productoAgregar);
 
       const producto = {
-        id: productoAgregar.id,
+        _id: productoAgregar._id,
         nombre: productoAgregar.title,
         cantidad: 1,
         precio: productoAgregar.price,

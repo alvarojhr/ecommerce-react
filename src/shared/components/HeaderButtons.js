@@ -3,17 +3,28 @@ import Button from "react-bootstrap/Button";
 import Badge from "react-bootstrap/Badge";
 import GoogleLogin from "react-google-login";
 import { Link } from "react-router-dom";
+import api from "../../api";
+import { useHistory } from "react-router-dom";
 
-const HeaderButtons = ({ isLoggedIn, setLogin, cantCarrito }) => {
+const HeaderButtons = ({ isLoggedIn, setLogin, cantCarrito, setIsAdmin }) => {
+  const history = useHistory();
+
   const login = (res) => {
-    setLogin(true);
     localStorage.setItem("token", res.tokenId);
-    console.log(res);
+    api.user.getUser().then((res) => {
+      setLogin(res.activo);
+      if (res.activo) {
+        setIsAdmin(res.rol === "Admin");
+      } else {
+        localStorage.removeItem("token");
+      }
+    });
   };
 
   const logout = () => {
     setLogin(false);
     localStorage.removeItem("token");
+    history.push("/");
   };
 
   const loginError = (err) => {

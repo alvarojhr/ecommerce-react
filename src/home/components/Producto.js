@@ -9,7 +9,7 @@ const Producto = ({ producto, isLoggedIn, productos, carrito, setCarrito }) => {
         <Card.Title>{producto.title}</Card.Title>
         <Card.Text>{producto.description}</Card.Text>
         <CardFooter
-          id={producto.id}
+          id={producto._id}
           precio={producto.price}
           categoria={producto.categoria}
           isLoggedIn={isLoggedIn}

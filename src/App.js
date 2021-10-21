@@ -17,11 +17,15 @@ import Gestion from "./productos/pages/Gestion";
 import api from "./api";
 import { useEffect } from "react";
 import EditarProducto from "./productos/pages/EditarProducto";
+import PrivateRoute from "./shared/components/PrivateRoute";
+import { useJwt } from "react-jwt";
+import PrivateRouteAdmin from "./shared/components/PrivateRouteAdmin";
 
 function App() {
   const [logged, setLogged] = useState(false);
   const [carrito, setCarrito] = useState([]);
   const [productos, setProductos] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,9 +39,15 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
+    const fetchData = async () => {
+      const validRol = await api.user.validarAdmin();
+      setIsAdmin(validRol);
+    };
+
     if (token === null) {
       setLogged(false);
     } else {
+      fetchData();
       setLogged(true);
     }
   }, []);
@@ -47,6 +57,7 @@ function App() {
       <Header
         isLoggedIn={logged}
         login={setLogged}
+        setIsAdmin={setIsAdmin}
         cantCarrito={carrito.reduce(
           (total, producto) => total + producto.cantidad,
           0
@@ -61,18 +72,18 @@ function App() {
             productos={productos}
           />
         </Route>
-        <Route path="/Carrito" exact>
+        <PrivateRoute path="/Carrito" exact>
           <Carrito carrito={carrito} setCarrito={setCarrito} />
-        </Route>
-        <Route path="/CrearProducto" exact>
+        </PrivateRoute>
+        <PrivateRoute path="/CrearProducto" exact>
           <CrearProducto productos={productos} setProductos={setProductos} />
-        </Route>
-        <Route path="/Gestion" exact>
+        </PrivateRoute>
+        <PrivateRouteAdmin path="/Gestion" isAdmin={isAdmin} exact>
           <Gestion productos={productos} setProductos={setProductos} />
-        </Route>
-        <Route path="/Gestion/Edit/:productId" exact>
+        </PrivateRouteAdmin>
+        <PrivateRoute path="/Gestion/Edit/:productId" exact>
           <EditarProducto productos={productos} setProductos={setProductos} />
-        </Route>
+        </PrivateRoute>
 
         <Redirect to="/" />
       </Switch>

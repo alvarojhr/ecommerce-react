@@ -37,10 +37,12 @@ const CrearProducto = ({ productos, setProductos }) => {
     const apiResponse = await api.products.create(newProduct);
     if (apiResponse.err) {
       setError(apiResponse.err.message);
+      setSuccess();
       console.log(apiResponse.err);
     } else {
-      setSuccess(apiResponse);
-      setProductos([...productos, newProduct]);
+      setSuccess(apiResponse.mensaje);
+      setError();
+      setProductos([...productos, apiResponse.producto]);
       //history.push("/");
     }
   };
