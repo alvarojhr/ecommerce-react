@@ -6,7 +6,10 @@ const callApi = async (url, options = {}) => {
     Authorization: `Bearer ${token}`,
   };
 
-  const response = await fetch("http://localhost:3002/api" + url, options);
+  const response = await fetch(
+    "https://ecommerce-backend-udea.herokuapp.com/api" + url,
+    options
+  );
   const data = await response.json();
   return data;
 };
