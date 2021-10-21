@@ -7,7 +7,7 @@ const callApi = async (url, options = {}) => {
   };
 
   const response = await fetch(
-    "https://ecommerce-backend-udea.herokuapp.com/api" + url,
+    process.env.REACT_APP_BACKEND_URL + url,
     options
   );
   const data = await response.json();
